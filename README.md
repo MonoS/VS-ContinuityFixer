@@ -1,6 +1,6 @@
 # VS-ContinuityFixer
-Continuity Fixer port for Vapoursynth  
-![Original code](https://github.com/sekrit-twc/EdgeFixer/tree/master/EdgeFixer)  
+Continuity Fixer port for Vapoursynth, ![original code](https://github.com/sekrit-twc/EdgeFixer/tree/master/EdgeFixer)  
+
 # Usage
 
 	edgefixer.ContinuityFixer(src, left, top, right, bottom, radius)
@@ -25,3 +25,6 @@ For large repair value [the four sides] the plugin create strange artifact and i
 
 	g++ -c continuity.cpp -O2 -msse2 -mfpmath=sse -o continuity.o
 	g++ -shared -Wl,--dll,--add-stdcall-alias -o continuity.dll continuity.o
+
+# Thanks
+Mirkosp, JEEB, HolyWu, jackoneill and Myrsloik
