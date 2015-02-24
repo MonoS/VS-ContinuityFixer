@@ -3,14 +3,16 @@ Continuity Fixer port for Vapoursynth
 
 # Usage
 ::
+	
 	edgefixer.ContinuityFixer(src, left, top, right, bottom, radius)
 
-src, left, top, right, bottom are mandatory
-radius is optional, it default to the shortest dimension of the clip [usually the height].
+src, left, top, right, bottom are mandatory.  
+radius is optional, it default to the shortest dimension of the clip [usually the height].  
 
 
 The plugin repair only the first plane [and will discart the others], for repairing all the planes do as follow
 ::
+	
 	#repair two left row on the luma plane and one left row on the chroma planes
 	y = core.std.ShufflePlanes(src, [0], vs.Gray).edgefixer.ContinuityFixer(y,2,0,0,0)
 	u = core.std.ShufflePlanes(src, [1], vs.Gray).edgefixer.ContinuityFixer(u,1,0,0,0)
@@ -23,5 +25,6 @@ For large repair value [the four sides] the plugin create strange artifact and i
 
 # Compilation
 ::
+	
 	g++ -c continuity.cpp -O2 -msse2 -mfpmath=sse -o continuity.o
 	g++ -shared -Wl,--dll,--add-stdcall-alias -o continuity.dll continuity.o
