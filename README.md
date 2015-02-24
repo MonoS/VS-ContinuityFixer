@@ -1,6 +1,6 @@
 # VS-ContinuityFixer
-Continuity Fixer port for Vapoursynth
-
+Continuity Fixer port for Vapoursynth  
+![Original code](https://github.com/sekrit-twc/EdgeFixer/tree/master/EdgeFixer)  
 # Usage
 
 	edgefixer.ContinuityFixer(src, left, top, right, bottom, radius)
