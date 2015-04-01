@@ -12,9 +12,9 @@ radius is optional, it default to the shortest dimension of the clip [usually th
 The plugin repair only the first plane [and will discart the others], for repairing all the planes do as follow  
 
 	#repair two left row on the luma plane and one left row on the chroma planes
-	y = core.std.ShufflePlanes(src, [0], vs.Gray).edgefixer.ContinuityFixer(y,2,0,0,0)
-	u = core.std.ShufflePlanes(src, [1], vs.Gray).edgefixer.ContinuityFixer(u,1,0,0,0)
-	v = core.std.ShufflePlanes(src, [2], vs.Gray).edgefixer.ContinuityFixer(v,1,0,0,0)
+	y = core.std.ShufflePlanes(src, [0], vs.Gray).edgefixer.ContinuityFixer(2,0,0,0)
+	u = core.std.ShufflePlanes(src, [1], vs.Gray).edgefixer.ContinuityFixer(1,0,0,0)
+	v = core.std.ShufflePlanes(src, [2], vs.Gray).edgefixer.ContinuityFixer(1,0,0,0)
 
 	fix = core.std.ShufflePlanes([y,u,v], [0,1,2], vs.YUV)
 
