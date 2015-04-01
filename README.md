@@ -19,7 +19,7 @@ The plugin repair only the first plane [and will discart the others], for repair
 	fix = core.std.ShufflePlanes([y,u,v], [0,1,2], vs.YUV)
 
 # Known issues
-For large repair value [the four sides] the plugin create strange artifact and is not pixel exact to the avs version, i don't know what cause this but for sane values [less then 10 pixel, maybe more] the output is the same as the avs version.
+<del>For large repair value [the four sides] the plugin create strange artifact and is not pixel exact to the avs version, i don't know what cause this but for sane values [less then 10 pixel, maybe more] the output is the same as the avs version.</del> Fixed in V5
 
 # Compilation
 
