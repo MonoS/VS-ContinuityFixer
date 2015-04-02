@@ -93,12 +93,14 @@ void process_edge(uint8_t *x8, const uint8_t *y8, int x_dist_to_next, int y_dist
     {
         least_squares(n, buf, &a, &b);
 		
-		//Saturate the pixel value
-		double test = (x[i * x_dist_to_next] * a + b);
-		if(test >= (1 << (sizeof(pixel_t)*8)))
-			test = (1 << (sizeof(pixel_t)*8)) - 1;
         for (i = 0; i < n; ++i)
+		{
+			//Saturate the pixel value
+			double test = (x[i * x_dist_to_next] * a + b);
+			if(test >= (1 << (sizeof(pixel_t)*8)))
+				test = (1 << (sizeof(pixel_t)*8)) - 1;
             x[i * x_dist_to_next] = (pixel_t)test;
+		}
     }
 }
 
