@@ -9,14 +9,10 @@ src, left, top, right, bottom are mandatory.
 radius is optional, it default to the shortest dimension of the clip [usually the height].  
 
 
-The plugin repair only the first plane [and will discart the others], for repairing all the planes do as follow  
+Since V6 the plugin can repair all the planes in a single call [for a maximum of three]
 
-	#repair two left row on the luma plane and one left row on the chroma planes
-	y = core.std.ShufflePlanes(src, [0], vs.Gray).edgefixer.ContinuityFixer(2,0,0,0)
-	u = core.std.ShufflePlanes(src, [1], vs.Gray).edgefixer.ContinuityFixer(1,0,0,0)
-	v = core.std.ShufflePlanes(src, [2], vs.Gray).edgefixer.ContinuityFixer(1,0,0,0)
-
-	fix = core.std.ShufflePlanes([y,u,v], [0,0,0], vs.YUV)
+	#repair two left row on the luma plane and one left row on the chroma planes with a radius of 10 for the luma plane and 5 for the chroma planes
+	fix = core.edgefixer.ContinuityFixer(src, [2,1,1], [0,0,0], [0,0,0], [0,0,0], [10,5,5])
 
 # Known issues
 <del>For large repair value [the four sides] the plugin create strange artifact and is not pixel exact to the avs version, i don't know what cause this but for sane values [less then 10 pixel, maybe more] the output is the same as the avs version.</del> Fixed in V5
