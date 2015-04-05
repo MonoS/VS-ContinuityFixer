@@ -12,6 +12,7 @@ radius is optional, it default to the shortest dimension of the clip [usually th
 Since V6 the plugin can repair all the planes in a single call [for a maximum of three]
 
 	#repair two left row on the luma plane and one left row on the chroma planes with a radius of 10 for the luma plane and 5 for the chroma planes
+	
 	fix = core.edgefixer.ContinuityFixer(src, [2,1,1], [0,0,0], [0,0,0], [0,0,0], [10,5,5])
 
 # Known issues
