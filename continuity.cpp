@@ -42,10 +42,10 @@ size_t required_buffer(int n)
     return n * sizeof(least_squares_data);
 }
 
-typedef void (*process_function)(uint8_t *x8, const uint8_t *y8, int x_dist_to_next, int y_dist_to_next, int n, int radius, least_squares_data *buf);
+typedef void (*process_function)(uint8_t *x8, const uint8_t *y8, int x_dist_to_next, int y_dist_to_next, int n, int radius, least_squares_data *buf, int bitsPerSample);
 
 template <typename pixel_t>
-void process_edge(uint8_t *x8, const uint8_t *y8, int x_dist_to_next, int y_dist_to_next, int n, int radius, least_squares_data *buf)
+void process_edge(uint8_t *x8, const uint8_t *y8, int x_dist_to_next, int y_dist_to_next, int n, int radius, least_squares_data *buf, int bitsPerSample)
 {
     int i;
     double a, b;
@@ -84,8 +84,8 @@ void process_edge(uint8_t *x8, const uint8_t *y8, int x_dist_to_next, int y_dist
 			
 			//Saturate the pixel value
 			double test = (x[i * x_dist_to_next] * a + b);
-			if(test >= (1 << (sizeof(pixel_t)*8)))
-				test = (1 << (sizeof(pixel_t)*8)) - 1;
+			if(test >= (1 << bitsPerSample))
+				test = (1 << bitsPerSample) - 1;
             x[i * x_dist_to_next] = (pixel_t) test;
         }
     }
@@ -97,8 +97,8 @@ void process_edge(uint8_t *x8, const uint8_t *y8, int x_dist_to_next, int y_dist
 		{
 			//Saturate the pixel value
 			double test = (x[i * x_dist_to_next] * a + b);
-			if(test >= (1 << (sizeof(pixel_t)*8)))
-				test = (1 << (sizeof(pixel_t)*8)) - 1;
+			if(test >= (1 << bitsPerSample))
+				test = (1 << bitsPerSample) - 1;
             x[i * x_dist_to_next] = (pixel_t)test;
 		}
     }
@@ -128,6 +128,8 @@ static const VSFrameRef  *VS_CC continuityGetFrame(int n, int activationReason, 
 		
 		least_squares_data *buf = (least_squares_data*) malloc(required_buffer(w > h ? w : h));
 		
+		int bitsPerSample = vsapi->getFrameFormat(src)->bitsPerSample;
+		
 		int bytesPerSample = vsapi->getFrameFormat(src)->bytesPerSample;
 		process_function proc;
 		if (bytesPerSample == 1)
@@ -148,28 +150,28 @@ static const VSFrameRef  *VS_CC continuityGetFrame(int n, int activationReason, 
 			for (i = 0; i < d->top[j]; ++i)
 			{
 				int ref_row = d->top[j] - i;
-				proc(dest + stride * (ref_row - 1), dest + stride * ref_row, bytesPerSample, bytesPerSample, width, d->radius[j], buf);
+				proc(dest + stride * (ref_row - 1), dest + stride * ref_row, bytesPerSample, bytesPerSample, width, d->radius[j], buf, bitsPerSample);
 			}
 
 			// bottom
 			for (i = 0; i < d->bottom[j]; ++i)
 			{
 				int ref_row = height - d->bottom[j] - 1 + i;
-				proc(dest + stride * (ref_row + 1), dest + stride * ref_row, bytesPerSample, bytesPerSample, width, d->radius[j], buf);
+				proc(dest + stride * (ref_row + 1), dest + stride * ref_row, bytesPerSample, bytesPerSample, width, d->radius[j], buf, bitsPerSample);
 			}
 
 			// left
 			for (i = 0; i < d->left[j]; ++i)
 			{
 				int ref_col = d->left[j] - i;
-				proc(dest + (ref_col - 1) * bytesPerSample, dest + ref_col * bytesPerSample, stride, stride, height, d->radius[j], buf);
+				proc(dest + (ref_col - 1) * bytesPerSample, dest + ref_col * bytesPerSample, stride, stride, height, d->radius[j], buf, bitsPerSample);
 			}
 
 			// right
 			for (i = 0; i < d->right[j]; ++i)
 			{
 				int ref_col = width - d->right[j] - 1 + i;
-				proc(dest + (ref_col + 1) * bytesPerSample, dest + ref_col * bytesPerSample, stride, stride, height, d->radius[j], buf);
+				proc(dest + (ref_col + 1) * bytesPerSample, dest + ref_col * bytesPerSample, stride, stride, height, d->radius[j], buf, bitsPerSample);
 			}
 		}
         
